@@ -4,7 +4,6 @@ import static org.grigoreva.model.request.Message.PATTERN;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.apache.log4j.Logger;
 import org.grigoreva.model.initiaterequest.InitialRequest;
 import org.grigoreva.model.initiateresponse.InitialResponse;
 import org.grigoreva.model.RestResponse;
@@ -16,16 +15,14 @@ import org.springframework.stereotype.Service;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 
-@Slf4j
-@Service
-@RequiredArgsConstructor
+@Slf4j  //Подключает логирование
+@Service //Класс для создания Bean, маркирует служебный класс
+@RequiredArgsConstructor //Позволяет создать конструктор неявно
 public class UserService {
-  //static Logger log = Logger.getLogger(UserService.class.getName());
 
   private static final String RESPONSE_MESSAGE_PREFIX = "Добрый день, ";
   private static final String RESPONSE_MESSAGE_POSTFIX
       = ", Ваше сообщение успешно обработано!";
-  private final ValidationService validationService; //Обработка исключений, если request содержит нул
 
   @Value("${server.serverName}")
   private String serverName;
@@ -33,15 +30,13 @@ public class UserService {
 //Создание Response
   public RestResponse handleRequestUserData(RestRequest restRequest){
 
-    validationService.validateRequest(restRequest);
     DateTimeFormatter format = DateTimeFormatter.ofPattern(PATTERN);
-
     final Message responseMessage = Message.builder().body(RESPONSE_MESSAGE_PREFIX
             .concat(restRequest.getRequest().getUser().getName())
             .concat(RESPONSE_MESSAGE_POSTFIX))
             .timestamp(LocalDateTime.now().format(format))
             .build();
-    log.debug("Response message generated with details: {}", responseMessage);
+    log.debug("Response сообщение сгенерировано с деталями: {}", responseMessage);
     final Response response = Response.builder()
             .message(responseMessage)
             .build();
@@ -50,12 +45,10 @@ public class UserService {
 
 //Создание Response с именем сервера
   public InitialResponse handleRequest(InitialRequest initialRequest) {
-  //Обработка исключений в случае некорректного Request
-    validationService.validateInitialRequest(initialRequest);
 
+    log.info("Клиент {} зарегистрировался/подключился ", initialRequest.getAdmin().getLogin());
     final InitialResponse initialResponse = new InitialResponse(serverName);
-    log.debug("Response message generated with details: {}", initialResponse );
-
+    log.debug("Response сообщение сгенерировано с деталями : {}", initialResponse );
     return initialResponse;
   }
 

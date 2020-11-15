@@ -7,7 +7,7 @@ import org.grigoreva.model.RestRequest;
 import org.springframework.stereotype.Service;
 
 //Метод для обработки ошибок вслучае некорректного Request с Client
-@Slf4j
+@Slf4j //
 @Service
 public class ValidationService {
 
@@ -15,15 +15,17 @@ public class ValidationService {
     if (restRequest ==null
         || restRequest.getRequest() == null
         || restRequest.getRequest().getUser() == null
-        || restRequest.getRequest().getMessage() == null
-        || restRequest.getRequest().getMessage() == null
-        && restRequest.getRequest().getUser() == null) {
-      log.error("Invalid request payload!");
-      throw new RequestInvalidException("Invalid request payload!");
+        || restRequest.getRequest().getMessage() == null) {
+      throw new RequestInvalidException("Невалидное значение request payload!");
     }
   }
 
   public void validateInitialRequest(InitialRequest initialRequest){
-
+    if (initialRequest ==null
+            || initialRequest.getAdmin() == null
+            || initialRequest.getAdmin().getLogin() == null
+            ||initialRequest.getAdmin().getPassword() == null) {
+      throw new RequestInvalidException("Невалидное значение request payload!");
+    }
   }
 }

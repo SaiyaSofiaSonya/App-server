@@ -7,6 +7,7 @@ import lombok.NoArgsConstructor;
 import org.grigoreva.model.response.Response;
 
 //Модель данныx, аннотации ниже для вызова конструктора, геттеров и сеттеров без их явного создания (Lombok)
+//Класс-обертка, чтобы передать в модели Json все вложенные объекты
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
