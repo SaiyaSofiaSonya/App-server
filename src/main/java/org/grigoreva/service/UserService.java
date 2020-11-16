@@ -1,7 +1,6 @@
 package org.grigoreva.service;
 
 import static org.grigoreva.model.request.Message.PATTERN;
-
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.grigoreva.model.initiaterequest.InitialRequest;
@@ -24,10 +23,10 @@ public class UserService {
   private static final String RESPONSE_MESSAGE_POSTFIX
       = ", Ваше сообщение успешно обработано!";
 
-  @Value("${server.serverName}")
+  @Value("${server.serverName}")//Имя сервера из файла application.yml
   private String serverName;
 
-//Создание Response
+//Создание Response на Request  именем и фамилией пользователя
   public RestResponse handleRequestUserData(RestRequest restRequest){
 
     DateTimeFormatter format = DateTimeFormatter.ofPattern(PATTERN);
@@ -36,10 +35,10 @@ public class UserService {
             .concat(RESPONSE_MESSAGE_POSTFIX))
             .timestamp(LocalDateTime.now().format(format))
             .build();
-    log.debug("Response сообщение сгенерировано с деталями: {}", responseMessage);
     final Response response = Response.builder()
             .message(responseMessage)
             .build();
+    log.debug("Отправлен Response");
     return new RestResponse(response);
  }
 
@@ -48,9 +47,7 @@ public class UserService {
 
     log.info("Клиент {} зарегистрировался/подключился ", initialRequest.getAdmin().getLogin());
     final InitialResponse initialResponse = new InitialResponse(serverName);
-    log.debug("Response сообщение сгенерировано с деталями : {}", initialResponse );
+    log.debug("Отправлено имя сервера : {}", initialResponse.getServerName() );
     return initialResponse;
   }
-
-
 }

@@ -13,7 +13,6 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
-
 @Slf4j //Использование логов Lombok
 @RestController //Для принятия запроса
 @RequiredArgsConstructor //Генерация конструктора
@@ -40,7 +39,6 @@ public class ServerAppController { //Для принятия Http запросо
           value = "api")
   public RestResponse userDateReceived(@RequestBody RestRequest request) {
     validationService.validateRequest(request); //Обработка исключений
-    log.info("Получен POST request с деталями: {}", request);
     log.info(PREFIX_LOG_ACCEPTED_MESSAGE
             + request.getRequest().getUser().getName()
             + COLON + request.getRequest().getUser().getSecondName()
